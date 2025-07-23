@@ -1,0 +1,59 @@
+-- Create reference tables first (no dependencies)
+
+CREATE TABLE AuthType (
+    AuthTypeID SERIAL PRIMARY KEY,
+    AuthTypeName VARCHAR(50) NOT NULL UNIQUE,
+    Description VARCHAR(255),
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE UserStatus (
+    UserStatusID SERIAL PRIMARY KEY,
+    UserStatusName VARCHAR(50) NOT NULL UNIQUE,
+    Description VARCHAR(255),
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE UserType (
+    UserTypeID SERIAL PRIMARY KEY,
+    UserTyoeName VARCHAR(50) NOT NULL UNIQUE,
+    Description VARCHAR(255),
+    PermissionLevel INTEGER DEFAULT 1,
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE DEPARTMENT (
+    DepartmentID SERIAL PRIMARY KEY,
+    DepartmentName VARCHAR(100) NOT NULL,
+    Description VARCHAR(255),
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create main tables (with foreign keys)
+
+CREATE TABLE Organization (
+    OrgID SEARIAL PRIMARY KEY,
+    OrgName VARCHAR(255) NOT NULL,
+    Description VARCHAR(500),
+    IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE User (
+    UserID UUID PRIMARY KEY DEFAULT gen_randome_uuid()
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    Name VARCHAR(255) NOT NULL,
+    HashedPassword VARCHAR(255),
+    OrgID INTEGER NOT NULL REFERENCES Organization(OrgID),
+    DepartmentID INTEGER NOT NULL REFERENCES Department(DepartmentID),
+    UserTyptID INTEGER NOT NULL REFERENCES UserType(UserTypeID),
+    AuthTypeID INTEGER NOT NULL REFERENCES AuthType(AuthTypeID),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
