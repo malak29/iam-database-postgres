@@ -2,7 +2,7 @@
 -- This script populates reference tables with test data
 
 -- Clear existing data (optional, for testing)
--- TRUNCATE TABLE "user", organization, department, usertype, userstatus, authtype RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE "users", organization, department, usertype, userstatus, authtype RESTART IDENTITY CASCADE;
 
 -- Insert Authentication Types
 INSERT INTO authtype (authtypename, description) VALUES 

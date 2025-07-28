@@ -47,7 +47,7 @@ CREATE TABLE organization (
     updatedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "users" (
     userid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(100) NOT NULL UNIQUE,
