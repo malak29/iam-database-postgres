@@ -47,7 +47,8 @@ CREATE TABLE organization (
     updatedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "users" (
+
+CREATE TABLE IF NOT EXISTS users (
     userid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -58,6 +59,13 @@ CREATE TABLE "users" (
     usertypeid INTEGER NOT NULL REFERENCES usertype(usertypeid),
     authtypeid INTEGER NOT NULL REFERENCES authtype(authtypeid),
     userstatusid INTEGER NOT NULL REFERENCES userstatus(userstatusid),
-    createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updatedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    lastlogin TIMESTAMP,
+    failedloginattempts INTEGER DEFAULT 0,
+    accountlocked BOOLEAN DEFAULT FALSE,
+    passwordresettoken VARCHAR(255),
+    passwordresettokenexpiry TIMESTAMP,
+    emailverified BOOLEAN DEFAULT FALSE,
+    emailverificationtoken VARCHAR(255)
 );
