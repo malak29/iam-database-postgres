@@ -2,7 +2,7 @@
 -- This script populates reference tables with test data
 
 -- Clear existing data (optional, for testing)
--- TRUNCATE TABLE "users", organization, department, usertype, userstatus, authtype RESTART IDENTITY CASCADE;
+TRUNCATE TABLE "users", organization, department, usertype, userstatus, authtype RESTART IDENTITY CASCADE;
 
 -- Insert Authentication Types
 INSERT INTO authtype (authtypename, description) VALUES 
@@ -68,3 +68,51 @@ SELECT userstatusid, userstatusname FROM userstatus ORDER BY userstatusid;
 SELECT usertypeid, usertypename, permissionlevel FROM usertype ORDER BY permissionlevel DESC;
 SELECT orgid, orgname FROM organization ORDER BY orgid;
 SELECT departmentid, departmentname FROM department ORDER BY departmentid;
+
+-- ✅ Insert a test Super Admin User
+-- Password should be stored in encrypted form in production.
+-- This uses plain text for testing; you may need to hash this in app logic.
+
+INSERT INTO users (
+    userid,
+    email,
+    username,
+    name,
+    hashedpassword,
+    orgid,
+    departmentid,
+    usertypeid,
+    authtypeid,
+    userstatusid,
+    createdat,
+    updatedat,
+    lastlogin,
+    failedloginattempts,
+    accountlocked,
+    passwordresettoken,
+    passwordresettokenexpiry,
+    emailverified,
+    emailverificationtoken
+)
+VALUES (
+    gen_random_uuid(),
+    'admin@iam.com',
+    'superadmin',
+    'Super Admin',
+    '$2a$10$uDVpL0MG3DR7sEXAMPLEHASHEDPASSWORDzWSrD6VZP3Q.Ct3ai',
+    1,                -- orgid
+    1,                -- departmentid
+    1,                -- usertypeid (SUPER_ADMIN)
+    1,                -- authtypeid (EMAIL_PASSWORD)
+    1,                -- userstatusid (ACTIVE)
+    CURRENT_TIMESTAMP, -- createdat
+    CURRENT_TIMESTAMP, -- updatedat
+    NULL,             -- lastlogin
+    0,                -- failedloginattempts
+    FALSE,            -- accountlocked
+    NULL,             -- passwordresettoken
+    NULL,             -- passwordresettokenexpiry
+    TRUE,             -- emailverified
+    NULL              -- emailverificationtoken
+);
+
